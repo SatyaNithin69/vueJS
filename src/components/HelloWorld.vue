@@ -2,7 +2,9 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     {{test}}
-    <input v-model="test">
+    <input v-model="test" @blur="addTodo">
+    <button @click="addTodo">Add</button>
+    <div v-for="task in tasks">{{task | capitalize | plural }}</div>
   </div>
 </template>
 
@@ -14,8 +16,32 @@ export default {
   },
   data() {
     return {
-      test: ""
+      test: "",
+      tasks: ["commit", "push", "raise PR"]
     };
+  },
+  methods: {
+    addTodo: function() {
+      this.tasks.push(this.test);
+      this.test = "";
+    }
+  },
+  created: function() {
+    console.log("created");
+  },
+  mounted: function() {
+    console.log("mounted");
+  },
+  updated: function() {
+    console.log("updated"); // when state changes
+  },
+  filters: {
+    capitalize: function(value) {
+      return value.toUpperCase();
+    },
+    plural: function(value) {
+      return (value += "S");
+    }
   }
 };
 </script>
